@@ -235,8 +235,6 @@ formInterst(TextEditingController textEditingController, UserModel userModel) {
                             context
                                 .read<UpdateProfileCubit>()
                                 .removeInterest(userModel, e);
-                            print("STATE SETELAH DI REMOVE");
-                            print(state);
                           },
                           child: const Icon(
                             Icons.close_outlined,

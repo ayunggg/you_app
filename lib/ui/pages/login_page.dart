@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:you_app/cubit/auth_cubit.dart';
 import 'package:you_app/cubit/sign_in_button_cubit.dart';
 import 'package:you_app/cubit/visibility_cubit.dart';
+import 'package:you_app/services/auth_services.dart';
 import 'package:you_app/services/session.dart';
 import 'package:you_app/theme/theme.dart';
 import 'package:you_app/ui/widgets/button_front.dart';
@@ -30,15 +31,16 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement initState
     Timer(const Duration(milliseconds: 500), () async {
       try {
-        String user = await SessionManager().getStringValuesSF();
-        if (user.isNotEmpty) {
-          const Center(
-            child: CircularProgressIndicator(),
-          );
-          Navigator.pushNamedAndRemoveUntil(context, "/about", (route) => false,
-              arguments: {
-                "token": user,
-              });
+        Map<String, dynamic> user = await SessionManager().getStringValuesSF();
+        if (user['token'] != null) {
+          String token = await AuthService().signIn(
+              email: user['email'], username: '', password: user['password']);
+
+          if (token.isNotEmpty) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/about', (route) => false,
+                arguments: {"token": token});
+          }
         }
       } catch (e) {
         ScaffoldMessenger.of(context)

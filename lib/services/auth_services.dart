@@ -35,11 +35,8 @@ class AuthService {
       } else {
         String token = data['access_token'];
 
-        await SessionManager().addStringToSF(token);
-        print("SESSION SVAE");
-        print(token);
-        print("SETELAH DI SAVE");
-        await SessionManager().getStringValuesSF();
+        await SessionManager().addStringToSF(token, email, password);
+
         return data['access_token'];
       }
     } else {
